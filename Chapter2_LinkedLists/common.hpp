@@ -1,4 +1,14 @@
+
+#include <iostream>
+
 class LinkedNode {
+
+friend std::ostream &operator<<( std::ostream& output, LinkedNode &p) {
+	output << "Address: " << p << " Value: " << p.getValue() << std::endl;
+
+	return output;
+}
+
 private:
   LinkedNode *next;
   int *value;
@@ -31,16 +41,16 @@ LinkedNode() {
   value = NULL;
 }
 LinkedNode( const int v) {
-  this.value = new int( v);
-  this.next = NULL;
+  this->value = new int( v);
+  this->next = NULL;
 }
-LinkedNode( const int v, const LinkedNode *next) {
-  this.value = new int( v);
-  this.next = next;
+LinkedNode( const int v, LinkedNode *next) {
+  this->value = new int( v);
+  this->next = next;
 }
-LinkedNode()~ {
+~LinkedNode() {
   free( next);
   free( value);
 }
 
-}
+};
