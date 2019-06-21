@@ -3,11 +3,7 @@
 
 class LinkedNode {
 
-friend std::ostream &operator<<( std::ostream& output, LinkedNode &p) {
-	output << "Address: " << p << " Value: " << p.getValue() << std::endl;
-
-	return output;
-}
+friend std::ostream &operator<<( std::ostream& output, LinkedNode *p);
 
 private:
   LinkedNode *next;
