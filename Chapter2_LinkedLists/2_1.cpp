@@ -2,14 +2,21 @@
 #include "common.hpp"
 using namespace std;
 
-ostream &operator<<( ostream &output, LinkedNode &p) {
-	output << "Address: " << p << " Value: " << p.getValue() << endl;
-	return output;
-}
-
 int main() {
 	auto head = new LinkedNode( 0);
-	cout << * head;
+
+	// head->appendToTail(1);
+
+	for( auto i=1; i<=10; i++) {
+		head->appendToTail( i);
+	}
+	// cout << *head << endl;
+	cout << "Before deletion" << endl;
+	displayLinkedList( head);
+
+	cout << "After deletion" << endl;
+	head = deleteLinkedNode( head, 11);
+	displayLinkedList(head);
 
 	return 0;
 }
