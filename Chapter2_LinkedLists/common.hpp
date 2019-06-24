@@ -82,6 +82,7 @@ ostream &operator<<( ostream &output, LinkedNode &p) {
 
 	return output;
 }
+
 // Display a linked list
 void displayLinkedList( LinkedNode *head) {
   if( head == NULL)
@@ -93,7 +94,6 @@ void displayLinkedList( LinkedNode *head) {
     current = current->getNext();
   }
 }
-
 
 // Delete a node from the list
 LinkedNode *deleteLinkedNode( LinkedNode *head, const int &v) {
@@ -130,4 +130,35 @@ LinkedNode *deleteLinkedNode( LinkedNode *head, const int &v) {
     return head;
   }
 
+}
+
+int getListLength( LinkedNode *head) {
+  if ( head == NULL) return 0;
+
+  LinkedNode *current = head->getNext();
+  int counter = 1;
+
+  while( current != NULL) {
+    counter++;
+    current = current->getNext();
+  }
+
+  return counter++;
+}
+
+
+LinkedNode *getNodeByValue( LinkedNode *head, const int &v) {
+  if( head ==NULL)
+    return NULL;
+
+  LinkedNode *current = head;
+
+  while( current != NULL) {
+    if( current->getValue() == v)
+      return current;
+
+    current = current->getNext();
+  }
+
+  return NULL;
 }
