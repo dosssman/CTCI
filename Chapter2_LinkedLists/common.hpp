@@ -162,3 +162,34 @@ LinkedNode *getNodeByValue( LinkedNode *head, const int &v) {
 
   return NULL;
 }
+
+LinkedNode *getParentNodeByValue( LinkedNode *head, const int &v) {
+  if( head ==NULL)
+    return NULL;
+
+  LinkedNode *current = head;
+
+  while( current->getNext() != NULL) {
+    if( current->getNext()->getValue() == v)
+      return current;
+
+    current = current->getNext();
+  }
+
+  return NULL;
+}
+
+LinkedNode *getParentNode( LinkedNode *head, LinkedNode* targetNode) {
+  if( head ==NULL)
+    return NULL;
+
+  LinkedNode *current = head;
+  while( current->getNext() != NULL) {
+    if( current->getNext() == targetNode ) {
+      return current;
+    }
+    current = current->getNext();
+  }
+
+  return NULL;
+}
