@@ -14,9 +14,9 @@ public:
   }
 
   void setNext( LinkedNode *node) {
-    // if( next != NULL) {
+    // if( next !=  nullptr) {
     //   free( next);
-    //   next = NULL;
+    //   next =  nullptr;
     // }
     next = node;
   }
@@ -26,9 +26,9 @@ public:
   }
 
   int *setValue( const int v) {
-    if( value != NULL) {
+    if( value !=  nullptr) {
       free( value);
-      value = NULL;
+      value =  nullptr;
     }
     value = new int( v);
 
@@ -37,7 +37,7 @@ public:
 
   LinkedNode *appendToTail( const int &v) {
     LinkedNode *head = this;
-    while( head->getNext() != NULL) {
+    while( head->getNext() !=  nullptr) {
       head = head->getNext();
     }
 
@@ -48,7 +48,7 @@ public:
 
   LinkedNode *appendToTail( LinkedNode *node) {
     LinkedNode *head = this;
-    while( head->getNext() != NULL) {
+    while( head->getNext() !=  nullptr) {
       head = head->getNext();
     }
     head->setNext( node);
@@ -58,12 +58,12 @@ public:
 
   // Constructors and Deconstructors
   LinkedNode() {
-    next = NULL;
-    value = NULL;
+    next =  nullptr;
+    value =  nullptr;
   }
   LinkedNode( const int v) {
     this->value = new int( v);
-    this->next = NULL;
+    this->next =  nullptr;
   }
   LinkedNode( const int v, LinkedNode *next) {
     this->value = new int( v);
@@ -85,11 +85,11 @@ ostream &operator<<( ostream &output, LinkedNode &p) {
 
 // Display a linked list
 void displayLinkedList( LinkedNode *head) {
-  if( head == NULL)
-    cout << "Passed NULL" << endl;
+  if( head ==  nullptr)
+    cout << "Passed  nullptr" << endl;
 
   LinkedNode *current = head;
-  while( current != NULL) {
+  while( current !=  nullptr) {
     cout << *current << endl;
     current = current->getNext();
   }
@@ -97,34 +97,34 @@ void displayLinkedList( LinkedNode *head) {
 
 // Delete a node from the list
 LinkedNode *deleteLinkedNode( LinkedNode *head, const int &v) {
-  if( head == NULL) {
-    cout << "Passed NULL" << endl;
+  if( head ==  nullptr) {
+    cout << "Passed  nullptr" << endl;
     return head;
   }
 
   if( head->getValue() == v) {
     LinkedNode *tmp = head->getNext();
-    head->setNext( NULL);
+    head->setNext(  nullptr);
     free( head);
     return tmp;
   }
 
   LinkedNode *current = head;
-  while( current != NULL ) {
-    if( current->getNext() != NULL && current->getNext()->getValue() == v) {
+  while( current !=  nullptr ) {
+    if( current->getNext() !=  nullptr && current->getNext()->getValue() == v) {
       break;
     } else {
       current = current->getNext();
     }
   }
 
-  if( current == NULL) {
+  if( current ==  nullptr) {
     cout << "Value not found" << endl;
     return head;
   } else {
     LinkedNode *tmp = current->getNext();
     current->setNext( tmp->getNext());
-    tmp->setNext( NULL);
+    tmp->setNext(  nullptr);
     free( tmp);
 
     return head;
@@ -133,12 +133,12 @@ LinkedNode *deleteLinkedNode( LinkedNode *head, const int &v) {
 }
 
 int getListLength( LinkedNode *head) {
-  if ( head == NULL) return 0;
+  if ( head ==  nullptr) return 0;
 
   LinkedNode *current = head->getNext();
   int counter = 1;
 
-  while( current != NULL) {
+  while( current !=  nullptr) {
     counter++;
     current = current->getNext();
   }
@@ -148,48 +148,71 @@ int getListLength( LinkedNode *head) {
 
 
 LinkedNode *getNodeByValue( LinkedNode *head, const int &v) {
-  if( head ==NULL)
-    return NULL;
+  if( head == nullptr)
+    return  nullptr;
 
   LinkedNode *current = head;
 
-  while( current != NULL) {
+  while( current !=  nullptr) {
     if( current->getValue() == v)
       return current;
 
     current = current->getNext();
   }
 
-  return NULL;
+  return  nullptr;
 }
 
 LinkedNode *getParentNodeByValue( LinkedNode *head, const int &v) {
-  if( head ==NULL)
-    return NULL;
+  if( head == nullptr)
+    return  nullptr;
 
   LinkedNode *current = head;
 
-  while( current->getNext() != NULL) {
+  while( current->getNext() !=  nullptr) {
     if( current->getNext()->getValue() == v)
       return current;
 
     current = current->getNext();
   }
 
-  return NULL;
+  return  nullptr;
 }
 
 LinkedNode *getParentNode( LinkedNode *head, LinkedNode* targetNode) {
-  if( head ==NULL)
-    return NULL;
+  if( head == nullptr)
+    return  nullptr;
 
   LinkedNode *current = head;
-  while( current->getNext() != NULL) {
+  while( current->getNext() !=  nullptr) {
     if( current->getNext() == targetNode ) {
       return current;
     }
     current = current->getNext();
   }
 
-  return NULL;
+  return  nullptr;
+}
+
+LinkedNode *getKthElementFromEnd( LinkedNode *head, const int &k) {
+	if( head ==  nullptr) return  nullptr;
+
+	int dist = 0;
+
+	LinkedNode *frontP = head, *backP = head;
+
+	while( frontP !=  nullptr) {
+		frontP = frontP->getNext();
+		if( dist == k) {
+			backP = backP->getNext();
+		} else if( dist < k) {
+			dist++;
+		}
+	}
+
+	if( dist == k) {
+		return backP;
+	} else {
+		return  nullptr;
+	}
 }
