@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-const int MAXSIZE = 256;
+const int MAXSIZE = 300;
 
 template <typename T>
 class MyStack {
@@ -82,4 +82,55 @@ public:
 
     return elements[fwdPos];
   }
+};
+
+template <typename T> class TripleStack {
+private:
+  int curPoss[3];
+  T elements[MAXSIZE] = {};
+  int stackMaxIndex( const int &stackIdx) {
+    return (MAXSIZE /3) * (stackIdx+1);
+  }
+public:
+  int stackSize( const int &stackIdx) {
+    return curPoss[stackIdx] - ((MAXSIZE /3) * stackIdx) +1;
+  }
+  void allStackSize() {
+    for( int i=0; i<3; i++)
+      cout << "Stack " << i+1 << " - Size: " << stackSize( i) << endl;
+  }
+  bool pushToStack( const int &stackIdx, const T &v) {
+    if( stackIdx < 0 || stackIdx > 2) return false;
+    if( stackSize(stackIdx) == stackMaxIndex(stackIdx)) return false;
+
+    elements[++curPoss[stackIdx]] = v;
+
+    return true;
+  }
+  T popFromStack( const int &stackIdx) {
+    if( curPoss[stackIdx] == ((MAXSIZE/3) * stackIdx -1)) return NULL;
+    return elements[curPoss[stackIdx]--];
+  }
+  T peekAtStack( const int &stackIdx) {
+    if( curPoss[stackIdx] == ((MAXSIZE/3) * stackIdx -1)) return NULL;
+    return elements[curPoss[stackIdx]];
+  }
+  void displayAll() {
+    for( int stackIdx = 0; stackIdx < 3; stackIdx++) {
+      displayStack(stackIdx);
+    }
+  }
+  void displayStack( const int &stackIdx) {
+    cout << "Displaying stack " << stackIdx +1 << endl;
+    for( int i = (MAXSIZE / 3 * (stackIdx)); i <= curPoss[stackIdx]; i++) {
+      cout << elements[i] << " ";
+      if( i == curPoss[stackIdx]) cout << endl;
+    }
+  }
+TripleStack() {
+  for( int i=0; i< 3; ++i) {
+    curPoss[i] = (MAXSIZE / 3 ) * i -1;
+    // cout << "CUrposs for " << i << " is " << curPoss[i] << endl;
+  }
+}
 };

@@ -3,14 +3,13 @@
 using namespace std;
 
 int main() {
+  MyStack<int> stck;
+  stck.push( 0);
+  stck.push( 1);
 
-  // MyStack<int> stck;
-  // stck.push( 0);
-  // stck.push( 1);
-  //
-  // cout << "Popped " << stck.pop() << endl;
-  //
-  // stck.display();
+  cout << "Popped " << stck.pop() << endl;
+
+  stck.display();
 
   MyQueue<int> q;
   q.enqueue(0);
