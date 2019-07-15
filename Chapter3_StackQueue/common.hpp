@@ -5,8 +5,7 @@ const int MAXSIZE = 300;
 
 template <typename T>
 class MyStack {
-
-private:
+protected:
   int curPos = -1;
   T elements[MAXSIZE] = {};
 public:
@@ -44,7 +43,8 @@ public:
   }
 };
 
-template <typename T> class MyQueue {
+template <typename T>
+class MyQueue {
 private:
   int fwdPos = -1;
   T elements[MAXSIZE] = {};
@@ -84,7 +84,8 @@ public:
   }
 };
 
-template <typename T> class TripleStack {
+template <typename T>
+class TripleStack {
 private:
   int curPoss[3];
   T elements[MAXSIZE] = {};
@@ -133,4 +134,31 @@ TripleStack() {
     // cout << "CUrposs for " << i << " is " << curPoss[i] << endl;
   }
 }
+};
+
+// 2_2 Stack with Minimum feature
+template <typename T>
+class MinStack : public MyStack<T> {
+private:
+	int minPoss[MAXSIZE] = {-1};
+public:
+	bool push(const T &v) {
+		if( this->curPos == MAXSIZE-1) return false;
+		this->elements[++this->curPos] = v;
+		int curPosMin = 0;
+		if( this->curPos > 0) {
+			if( v <= this->elements[minPoss[this->curPos -1]])
+				curPosMin = this->curPos;
+			else
+				curPosMin = minPoss[this->curPos-1];
+		}
+		minPoss[this->curPos] = curPosMin;
+
+    return true;
+	}
+	T min() {
+		if( this->curPos <= -1) return NULL;
+
+		return this->elements[this->curPos];
+	}
 };
