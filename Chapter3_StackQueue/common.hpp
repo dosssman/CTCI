@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-const int MAXSIZE = 300;
+const int MAXSIZE = 10;
 
 template <typename T>
 class MyStack {
@@ -40,6 +40,18 @@ public:
       cout << elements[i] << " ";
       if( i == curPos) cout << endl;
     }
+  }
+
+  bool isFull() {
+    if( count() == MAXSIZE)
+      return true;
+
+    return false;
+  }
+  bool isEmpty() {
+    if( count() == 0) return true;
+
+    return false;
   }
 };
 
@@ -140,7 +152,7 @@ TripleStack() {
 template <typename T>
 class MinStack : public MyStack<T> {
 private:
-	int minPoss[MAXSIZE] = {-1};
+	int minPoss[MAXSIZE];
 public:
 	bool push(const T &v) {
 		if( this->curPos == MAXSIZE-1) return false;
@@ -161,4 +173,78 @@ public:
 
 		return this->elements[this->curPos];
 	}
+
+MinStack() {
+  for( auto i=0; i< MAXSIZE; ++i)
+    minPoss[i] = -1;
+}
+};
+
+// 3_3 Deps
+const int MAXSTACKS = 10;
+const int STACKMAXSIZE = 10;
+
+template <typename T>
+class SetOfStacks {
+private:
+  MyStack<T> *stacks[MAXSTACKS];
+  int curStckPtr = -1;
+public:
+  T pop() {
+    if( curStckPtr == -1) return NULL;
+
+    // First get the value to pop from the current stack
+    T tmp = stacks[curStckPtr]->pop();
+    // Clear the now useless stack
+    if( stacks[curStckPtr]->isEmpty())
+      free( stacks[curStckPtr--]);
+
+    return tmp;
+  }
+  void display() {
+    if( curStckPtr == -1) cout << "Empty set of stacks" << endl;
+    // Iterate thorugh all the stacks in the set
+    for( auto stckIdx = 0; stckIdx <= curStckPtr; stckIdx++) {
+      cout << "Displaying content of stack " << stckIdx+1 << endl;
+      // Iterate over the values of the focused stack
+      // for( auto valIdx = 0; valIdx <= stackCurPosPtrs[curStckPtr]; ++valIdx) {
+      //   cout << stacks[stckIdx][stackCurPosPtrs[stckIdx]] << " ";
+      //   if( valIdx == stackCurPosPtrs[stckIdx])
+      //     cout << endl;
+      // }
+      stacks[stckIdx]->display();
+    }
+  }
+  bool push( const T &v) {
+    if( curStckPtr == MAXSTACKS -1 &&
+        stacks[curStckPtr]->isFull())
+      return false;
+
+    if( curStckPtr == -1 ||
+      (curStckPtr < MAXSTACKS -1 &&
+        stacks[curStckPtr]->isFull()))
+        stacks[++curStckPtr] = new MyStack<T>();
+
+    stacks[curStckPtr]->push( v);
+
+    return true;
+  }
+
+  T popAt( const int &stackIdx) {
+    if( stackIdx <0 || stackIdx > curStckPtr) return NULL;
+
+    T tmp = stacks[stackIdx]->pop();
+
+    if( stacks[stackIdx]->isEmpty()) {
+      free( stacks[stackIdx]);
+
+      for( auto i=stackIdx;i < curStckPtr; ++i) {
+        stacks[i] = stacks[i+1];
+
+      stacks[curStckPtr--] = NULL;
+      }
+    }
+
+    return tmp;
+  }
 };
