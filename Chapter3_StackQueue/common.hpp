@@ -248,3 +248,50 @@ public:
     return tmp;
   }
 };
+
+template <typename T>
+class MyQFromStacks {
+private:
+	MyStack<T> s1, s2;
+	bool isPushing = true;
+public:
+	bool push( const T &v) {
+		if( ! isPushing) {
+			shiftStacks();
+		}
+		if( s1.isFull()) return false;
+
+		s1.push( v);
+		
+		return true;
+	}
+	
+	T pop() {
+		if( isPushing) {
+			shiftStacks();
+		}
+		if( s2.isEmpty()) return NULL;
+
+		return s2.pop();
+	}
+	void shiftStacks() {
+		if( !isPushing) {
+			while(! s2.isEmpty()) {
+				s1.push( s2.pop());	
+			}
+		} else {
+			while( ! s1.isEmpty()) {
+				s2.push( s1.pop());
+			}
+		}
+		isPushing = ! isPushing;
+	}
+	void display() {
+		cout << "Display s1" << endl;
+		s1.display();
+
+		cout << "Dislay s2" << endl;
+		s2.display();
+	}
+};
+
