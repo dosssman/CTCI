@@ -262,10 +262,10 @@ public:
 		if( s1.isFull()) return false;
 
 		s1.push( v);
-		
+
 		return true;
 	}
-	
+
 	T pop() {
 		if( isPushing) {
 			shiftStacks();
@@ -277,7 +277,7 @@ public:
 	void shiftStacks() {
 		if( !isPushing) {
 			while(! s2.isEmpty()) {
-				s1.push( s2.pop());	
+				s1.push( s2.pop());
 			}
 		} else {
 			while( ! s1.isEmpty()) {
@@ -294,4 +294,3 @@ public:
 		s2.display();
 	}
 };
-
