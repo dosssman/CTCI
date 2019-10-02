@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+// TODO: Rewrite with templates in mind
 class LinkedNode {
 
 // friend std::ostream &operator<<( std::ostream& output, LinkedNode &p);
@@ -145,7 +146,6 @@ int getListLength( LinkedNode *head) {
 
   return counter++;
 }
-
 
 LinkedNode *getNodeByValue( LinkedNode *head, const int &v) {
   if( head == nullptr)

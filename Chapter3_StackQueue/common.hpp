@@ -1,4 +1,7 @@
 #include <iostream>
+#include <list>
+#include <string>
+
 using namespace std;
 
 const int MAXSIZE = 10;
@@ -249,6 +252,7 @@ public:
   }
 };
 
+//3.5
 template <typename T>
 class MyQFromStacks {
 private:
@@ -293,4 +297,216 @@ public:
 		cout << "Dislay s2" << endl;
 		s2.display();
 	}
+};
+
+//3.6
+template <typename T> class MySortedStack {
+private:
+  MyStack<T> main;
+  MyStack<T> aux;
+public:
+  bool push( const T &v) {
+    if( main.isFull()) return false;
+
+    if( main.isEmpty()) {
+      main.push( v);
+    }  else {
+      while( !main.isEmpty() && main.peek() > v) {
+        aux.push( main.pop());
+        if( main.isEmpty()) break;
+      }
+      main.push( v);
+      while( !aux.isEmpty()) {
+        main.push( aux.pop());
+      }
+    };
+
+    return true;
+  }
+
+  T pop() {
+    return main.pop();
+  }
+
+  T peek() {
+    return main.peek();
+  }
+
+  int count() {
+    return main.count();
+  }
+
+  // Debug use
+  void display() {
+    cout << "Display Main stack" << endl;
+    main.display();
+
+    cout << "Displaying Aux stack" << endl;
+    aux.display();
+  }
+
+  bool isFull() {
+    return main.isFull();
+  }
+
+  bool isEmpty() {
+    return main.isEmpty();
+  }
+};
+
+// 3.7
+// Templated LinkedList
+template <typename T> class ForwardListNode {
+private:
+  ForwardListNode *next;
+  T *item;
+public:
+  ForwardListNode *getNext() {
+    return next;
+  }
+
+  void setNext( ForwardListNode *node) {
+    next = node;
+  }
+
+  T *getItem() {
+    return item;
+  }
+
+  T *setItem( T *v) {
+    item = v;
+
+    return item;
+  }
+
+  // Constructors and Deconstructors
+  ForwardListNode() {
+    next =  nullptr;
+    item =  nullptr;
+  }
+
+  ForwardListNode( T *v) {
+    this->item = v;
+    this->next = nullptr;
+  }
+
+  ForwardListNode *push_back(T *item) {
+    ForwardListNode *head = this;
+    if( head == nullptr) {
+      head = new ForwardListNode( item);
+
+      return head;
+    }
+
+    while( head->getNext() !=  nullptr) {
+      head = head->getNext();
+    }
+
+    head->setNext( new ForwardListNode( item));
+
+    return head->getNext();
+  }
+
+  void display() {
+    if( this == nullptr) {
+      cout << "Empty list." << endl;
+      return;
+    }
+
+    ForwardListNode *head = this;
+    while( head != nullptr) {
+      cout << "Animal@ " << head->item << " -- Species: " << head->item->species << endl;
+      head = head->getNext();
+    }
+  }
+};
+
+
+class Animal {
+public:
+  string species;
+  Animal( const string &s) {
+    species = s;
+  }
+  Animal( const char *s) {
+    species = string( s);
+  }
+
+};
+
+class SystemShelter {
+private:
+  ForwardListNode<Animal> *animals = nullptr;
+public:
+  bool enqueue( Animal *a) {
+
+    if( animals == nullptr)
+      animals = animals->push_back(a);
+    else
+      animals->push_back(a);
+
+    return true;
+  }
+
+  Animal *dequeueAny() {
+    if( animals == nullptr) return nullptr;
+
+    Animal *adopted = animals->getItem();
+    animals->setItem( nullptr);
+    ForwardListNode<Animal> *nextInLine = animals->getNext();
+    animals->setNext( nullptr);
+    free( animals);
+    animals = nextInLine;
+
+    return adopted;
+  }
+
+  Animal *dequeueByType( const string &t) {
+    if( animals == nullptr) return nullptr;
+
+    // If the head has the mactching animal
+    if (animals->getItem()->species == t) {
+      Animal *adopted = animals->getItem();
+      animals->setItem( nullptr);
+      ForwardListNode<Animal> *nextInLine = animals->getNext();
+      animals->setNext( nullptr);
+      free( animals);
+      animals = nextInLine;
+
+      return adopted;
+    }
+
+    // Else if we need to look forward to find the matching animal
+    ForwardListNode<Animal> *head = animals->getNext();
+    ForwardListNode<Animal> *headParent = animals;
+
+    Animal *adopted = nullptr;
+    while( head != nullptr) {
+      if( head->getItem()->species == t) {
+        adopted = head->getItem();
+        head->setItem( nullptr);
+        headParent->setNext( head->getNext());
+        head->setNext( nullptr);
+        free( head);
+
+        return adopted;
+      }
+      headParent = head;
+      head = head->getNext();
+    }
+
+    return adopted;
+  }
+
+  Animal *dequeueDog() {
+    return dequeueByType( string("d"));
+  }
+
+  Animal *dequeueCat() {
+    return dequeueByType( string("c"));
+  }
+
+  void display() {
+    animals->display();
+  }
 };
